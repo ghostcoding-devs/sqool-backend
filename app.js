@@ -26,7 +26,7 @@ app.use('/api/v1', routes)
 
 // Start Server and Connect to DB
 server.listen(app.get('port'), () => {
-  console.log(`IMS Backend listening on port ${app.get('port')}`)
+  console.log(`Sqool Backend listening on port ${app.get('port')}`)
 })
 
 module.exports = server
