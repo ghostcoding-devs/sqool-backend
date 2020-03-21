@@ -1,13 +1,8 @@
 const config = require('config')
-const {
-  project_id: projectId,
-  private_key: privateKey,
-  client_email: clientEmail
-} = config.get('CLOUD.FIRESTORE')
-const { FirestoreClient } = require('botfriends-firestore-sdk')
+const admin = require('firebase-admin')
 
-module.exports = new FirestoreClient({
-  privateKey,
-  projectId,
-  clientEmail
+const db = admin.initializeApp({
+  credential: admin.credential.cert(config.get('CLOUD.FIRESTORE'))
 })
+
+module.exports = db.firestore()
