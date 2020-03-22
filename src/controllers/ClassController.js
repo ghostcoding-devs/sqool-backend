@@ -6,6 +6,11 @@ const getClass = async (req, res) => {
   return res.json(result)
 }
 
+const listClasses = async (req, res) => {
+  const result = await classService.getClassesByTeacherId(req.userId)
+  return res.json(result)
+}
+
 const createClass = async (req, res) => {
   const { name } = req.body
   const result = await classService.createClass(req.userId, name)
@@ -34,5 +39,6 @@ const deleteClass = (req, res) => {
 
 module.exports = {
   getClass,
+  listClasses,
   createClass
 }

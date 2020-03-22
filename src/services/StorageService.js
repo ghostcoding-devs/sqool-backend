@@ -7,9 +7,9 @@ const bucket = new Storage({
   credentials: config.get('CLOUD.STORAGE')
 }).bucket(bucketName)
 
-const uploadFile = (file, fileName) => {
+const uploadFile = (file, path) => {
   return new Promise((resolve, reject) => {
-    const stream = bucket.file(fileName).createWriteStream({
+    const stream = bucket.file(path).createWriteStream({
       metadata: {
         contentType: file.mimetype
       },
@@ -22,7 +22,7 @@ const uploadFile = (file, fileName) => {
   
     stream.on('finish', () => {
       file.makePublic().then(() => {
-        resolve(`https://storage.googleapis.com/${bucketName}/${fileName}`)
+        resolve(`https://storage.googleapis.com/${bucketName}/${path}`)
       })
     })
   
