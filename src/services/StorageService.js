@@ -9,7 +9,7 @@ const bucket = new Storage({
 
 const uploadFile = (file, path) => {
   return new Promise((resolve, reject) => {
-    const stream = bucket.file(path).createWriteStream({
+    const stream = bucket.file('exercises/' + path).createWriteStream({
       metadata: {
         contentType: file.mimetype
       },
