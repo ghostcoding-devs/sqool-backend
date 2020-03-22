@@ -12,26 +12,37 @@ const getClass = async id => {
   } catch (error) {
     return {
       error: error.message,
-      message: 'Die Klasse konnte nicht gefunden werden.'
+      description: 'Die Klasse konnte nicht gefunden werden.'
     }
   }
 }
 
-const createClass = async (teacherId, name) => {
+const getClassesByTeacherId = async teacherId => {
   try {
-    return firestore.collection(collectionName).add({
-      teacherId,
-      name
-    })
+    const result = firestore.collection(collectionName).where('teacherId', '==', teacherId).get()
+    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))
   } catch (error) {
     return {
       error: error.message,
-      message: 'Es konnte keine Klasse erstellt werden. Bitte versuchen Sie es nochmal.'
+      description: 'Klassen konnten nicht gefunden werden.'
+    }
+  }
+}
+
+const createClass = async classData => {
+  try {
+    return firestore.collection(collectionName).add(classData)
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Es konnte keine Klasse erstellt werden. Bitte versuchen Sie es nochmal.'
     }
   }
 }
 
 module.exports = {
   getClass,
-  createClass
+  getClasses,
+  createClass,
+  getClassesByTeacherId
 }
