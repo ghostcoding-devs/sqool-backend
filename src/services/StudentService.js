@@ -53,9 +53,33 @@ const createStudent = async (student) => {
   }
 }
 
+const updateStudent = async (id, payload) => {
+  try {
+    await firestore.collection(collectionName).doc(id).set(payload, { merge: true })
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Schüler konnte nicht geändert werden.'
+    }
+  }
+}
+
+const deleteStudent = async id => {
+  try {
+    await firestore.collection(collectionName).doc(id).delete()
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Schüler konnte nicht gelöscht werden.'
+    }
+  }
+}
+
 module.exports = {
   getStudent,
   getStudentsByClass,
   getStudentsByParents,
-  createStudent
+  createStudent,
+  updateStudent,
+  deleteStudent
 }

@@ -52,9 +52,33 @@ const createUser = async (user, isTeacher) => {
   }
 }
 
+const updateUser = async (id, payload) => {
+  try {
+    await firestore.collection(collectionName).doc(id).set(payload, { merge: true })
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Der Nutzer konnte nicht geändert werden.'
+    }
+  }
+}
+
+const deleteUser = async id => {
+  try {
+    await firestore.collection(collectionName).doc(id).delete()
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Der Nutzer konnte nicht gelöscht werden.'
+    }
+  }
+}
+
 module.exports = {
   getUser,
   getTeachers,
   getParents,
-  createUser
+  createUser,
+  updateUser,
+  deleteUser
 }
