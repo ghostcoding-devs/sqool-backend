@@ -1,10 +1,11 @@
 const firestore = require('../storage/firestore')
+const { docMapper } = require('../utils')
 
 const collectionName = 'packages'
 
 const getPackage = async id => {
   try {
-    const result = firestore.collection(collectionName).doc(id).get()
+    const result = await firestore.collection(collectionName).doc(id).get()
     if (!result.exists) {
       throw new Error()
     }
@@ -13,6 +14,18 @@ const getPackage = async id => {
     return {
       error: error.message,
       message: 'Arbeitspaket konnte nicht gefunden werden.'
+    }
+  }
+}
+
+const getPackagesByClass = async classId => {
+  try {
+    const result = await firestore.collection(collectionName).where('classId', '==', classId).get()
+    return docMapper(result.docs)
+  } catch (error) {
+    return {
+      error: error.message,
+      message: 'Arbeitspakete der Klasse konnten nicht gefunden werden.'
     }
   }
 }
@@ -28,7 +41,20 @@ const createPackage = async (package) => {
   }
 }
 
+const updatePackage = async (id, payload) => {
+  try {
+    await firestore.collection(collectionName).doc(id).set(payload, { merge: true })
+  } catch (error) {
+    return {
+      error: error.message,
+      message: 'Arbeitspaket konnte nicht angepasst werden.'
+    }
+  }
+}
+
 module.exports = {
   getPackage,
-  createPackage
+  getPackagesByClass,
+  createPackage,
+  updatePackage
 }

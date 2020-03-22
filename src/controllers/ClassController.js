@@ -21,18 +21,6 @@ const updateClass = (req, res) => {
 
 }
 
-const getClassStudents = () => {
-
-}
-
-const addStudentToClass = (req, res) => {
-
-}
-
-const removeStudentFromClass = (req, res) => {
-
-}
-
 const deleteClass = (req, res) => {
 
 }

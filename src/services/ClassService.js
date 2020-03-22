@@ -1,4 +1,5 @@
 const firestore = require('../storage/firestore')
+const { docMapper } = require('../utils')
 
 const collectionName = 'classes'
 
@@ -20,7 +21,7 @@ const getClass = async id => {
 const getClassesByTeacherId = async teacherId => {
   try {
     const result = firestore.collection(collectionName).where('teacherId', '==', teacherId).get()
-    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+    return docMapper(result.docs)
   } catch (error) {
     return {
       error: error.message,
