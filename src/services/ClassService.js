@@ -43,7 +43,7 @@ const createClass = async classData => {
 
 module.exports = {
   getClass,
-  getClasses,
+  // getClasses,
   createClass,
   getClassesByTeacherId
 }

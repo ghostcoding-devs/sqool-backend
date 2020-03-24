@@ -1,7 +1,9 @@
-const firestore = require('../storage/firestore')
+const { firestore, admin } = require('../storage/firestore')
+
 const { docMapper } = require('../utils')
 
 const collectionName = 'users'
+
 
 const getUser = async userId => {
   try {
@@ -10,6 +12,19 @@ const getUser = async userId => {
     return {
       error: error.message,
       description: 'Der Nutzer konnte nicht gefunden werden.'
+    }
+  }
+}
+
+const listUsers = async () => {
+  try {
+    // implement pagination 
+    // db call machen und daten zusammenlegen
+    return { users } = await admin.listUsers(1000)
+  } catch (err) {
+    return {
+      error: err.message,
+      description: 'Nutzerübersicht konnte nicht geladen werden'
     }
   }
 }
@@ -74,11 +89,41 @@ const deleteUser = async id => {
   }
 }
 
+
+// var auth = firebase.auth();
+// var emailAddress = "user@example.com";
+
+// auth.sendPasswordResetEmail(emailAddress).then(function() {
+//   // Email sent.
+// }).catch(function(error) {
+//   // An error happened.
+// });
+
+const resetPassword = async (email) => {
+  console.log(email)
+  try {
+    admin.languageCode = 'de'
+    const actionCodeSettings = {
+      url: 'https://www.example.com/?email=user'
+    }
+   const x = await admin.sendPasswordResetEmail(email)
+   console.log('x', x)
+  } catch (err) {
+    console.log(err)
+    return {
+      error: err.message,
+      description: 'Fehler beim zurücksetzen des Passwortes'
+    }
+  }
+}
+
 module.exports = {
   getUser,
+  listUsers,
   getTeachers,
   getParents,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  resetPassword
 }
