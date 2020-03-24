@@ -87,7 +87,11 @@ const createParent = async (req, res) => {
   })
 
 }
-
+const getUser = async (req, res) => {
+  const email = req.params.id
+  const result = await userService.getUser(email)
+  res.json(result)
+}
 const createTeacher = async (req, res) => {
   const { email } = req.body
   await userService.createUser({ email }, true)
@@ -111,6 +115,7 @@ const resetPassword = async (req, res) => {
 
 module.exports = {
   createParent,
+  getUser,
   createTeacher,
   listUsers,
   resetPassword
