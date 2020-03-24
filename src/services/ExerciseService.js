@@ -1,4 +1,4 @@
-const firestore = require('../storage/firestore')
+const { firestore } = require('../storage/firestore')
 
 const collectionName = 'exercises'
 
