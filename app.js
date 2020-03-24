@@ -10,7 +10,7 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 app.set('port', process.env.PORT || 4000)
 
-// Express Routs
+// Express Routes
 const routes = require('./src/routes')(io)
 
 // MiddleWare
