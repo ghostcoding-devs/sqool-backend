@@ -5,11 +5,30 @@ const { docMapper } = require('../utils')
 const collectionName = 'users'
 
 
-const getUser = async userId => {
+const getUser = async id => {
   try {
-    return firestore.collection(collectionName).doc(userId).get()
+    const requestUser = await firestore.collection(collectionName).doc(id).get()
+    const userData = requestUser.data()
+    const user = {
+      ...requestUser.data(),
+      id: requestUser.id
+    }
+    if (userData) {
+      console.log(user)
+      return {
+        success: true,
+        data: user
+      }
+    } else {
+      return {
+        success: false,
+        error: 'User not found',
+        description: `User with id: ${id} not found`
+      }
+    }
   } catch (error) {
     return {
+      success: false,
       error: error.message,
       description: 'Der Nutzer konnte nicht gefunden werden.'
     }
@@ -53,12 +72,9 @@ const getParents = async () => {
   }
 }
 
-const createUser = async (user, isTeacher) => {
+const createUser = async (id, userData) => {
   try {
-    return firestore.collection(collectionName).add({
-      isTeacher,
-      ...user
-    })
+    return await firestore.collection(collectionName).doc(id).set(userData)
   } catch (error) {
     return {
       error: error.message,
@@ -100,14 +116,12 @@ const deleteUser = async id => {
 // });
 
 const resetPassword = async (email) => {
-  console.log(email)
   try {
     admin.languageCode = 'de'
     const actionCodeSettings = {
       url: 'https://www.example.com/?email=user'
     }
-   const x = await admin.sendPasswordResetEmail(email)
-   console.log('x', x)
+   return await admin.sendPasswordResetEmail(email)
   } catch (err) {
     console.log(err)
     return {
