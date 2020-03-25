@@ -1,4 +1,5 @@
 const { firestore } = require('../storage/firestore')
+const { docMapper } = require('../utils')
 
 const collectionName = 'exercises'
 
@@ -15,7 +16,7 @@ const createExercise = async (exercise) => {
 
 const getExercise = async id => {
   try {
-    const result = firestore.collection(collectionName).doc(id).get()
+    const result = await firestore.collection(collectionName).doc(id).get()
     if (!result.exists) {
       throw new Error('No document found.')
     }
@@ -24,6 +25,18 @@ const getExercise = async id => {
     return {
       error: error.message,
       description: 'Übung konnte nicht gefunden werden.'
+    }
+  }
+}
+
+const getExercisesByTeacher = async teacherId => {
+  try {
+    const result = await firestore.collection(collectionName).where('createdBy', '==', teacherId).get()
+    return docMapper(result.docs)
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Es konnten keine Übungen gefunden werden.'
     }
   }
 }
@@ -41,6 +54,7 @@ const deleteExercise = async id => {
 
 module.exports = {
   getExercise,
+  getExercisesByTeacher,
   createExercise,
   deleteExercise
 }
