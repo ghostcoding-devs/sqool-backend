@@ -1,6 +1,6 @@
 module.exports = {
   APP: {
-    PORT: 4000
+    PORT: 8080
   },
   CLOUD: {
     FIRESTORE: {

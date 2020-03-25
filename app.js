@@ -1,4 +1,5 @@
 const cors = require('cors')
+const config = require('config')
 const express = require('express')
 const helmet = require('helmet')
 const morgan = require('morgan')
@@ -8,7 +9,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
-app.set('port', process.env.PORT || 4000)
+app.set('port', config.get('APP.PORT'))
 
 // Express Routes
 const routes = require('./src/routes')(io)
