@@ -30,7 +30,7 @@ module.exports = io => {
   // router.get('/users/teachers', userController.listTeachers)
   // router.get('/users/parents', userController.listParents)
   router.post('/users/teachers', userController.createTeacher)
-  // router.put('/users/:id', socketMiddleware(io), userController.updateUser)
+  router.put('/users/:id', socketMiddleware(io), userController.updateUser)
   // router.delete('/users/:id', userController.deleteUser)
   router.put('/users/resetPassword', userController.resetPassword)
 

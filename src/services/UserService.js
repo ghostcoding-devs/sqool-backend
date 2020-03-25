@@ -5,15 +5,16 @@ const { docMapper } = require('../utils')
 const collectionName = 'users'
 
 
-const getUser = async email => {
+const getUser = async id => {
   try {
-    const requestUser = await firestore.collection(collectionName).doc(email).get()
+    const requestUser = await firestore.collection(collectionName).doc(id).get()
     const userData = requestUser.data()
     const user = {
       ...requestUser.data(),
       id: requestUser.id
     }
     if (userData) {
+      console.log(user)
       return {
         success: true,
         data: user
@@ -22,7 +23,7 @@ const getUser = async email => {
       return {
         success: false,
         error: 'User not found',
-        description: `User with id: ${email} not found`
+        description: `User with id: ${id} not found`
       }
     }
   } catch (error) {
@@ -71,12 +72,9 @@ const getParents = async () => {
   }
 }
 
-const createUser = async (userData, isTeacher) => {
+const createUser = async (id, userData) => {
   try {
-    return await firestore.collection(collectionName).doc(userData.email).set({
-      isTeacher,
-      ...userData
-    })
+    return await firestore.collection(collectionName).doc(id).set(userData)
   } catch (error) {
     return {
       error: error.message,
