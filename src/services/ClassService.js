@@ -5,7 +5,7 @@ const collectionName = 'classes'
 
 const getClass = async id => {
   try {
-    const result = firestore.collection(collectionName).doc(id).get()
+    const result = await firestore.collection(collectionName).doc(id).get()
     if (!result.exists) {
       throw new Error()
     }
@@ -20,7 +20,7 @@ const getClass = async id => {
 
 const getClassesByTeacherId = async teacherId => {
   try {
-    const result = firestore.collection(collectionName).where('teacherId', '==', teacherId).get()
+    const result = await firestore.collection(collectionName).where('teacherId', '==', teacherId).get()
     return docMapper(result.docs)
   } catch (error) {
     return {
@@ -30,9 +30,12 @@ const getClassesByTeacherId = async teacherId => {
   }
 }
 
-const createClass = async classData => {
+const createClass = async (teacherId, classData) => {
   try {
-    return firestore.collection(collectionName).add(classData)
+    return firestore.collection(collectionName).add({
+      teacherId,
+      ...classData
+    })
   } catch (error) {
     return {
       error: error.message,
@@ -41,9 +44,21 @@ const createClass = async classData => {
   }
 }
 
+const updateClass = async (id, newClass) => {
+  try {
+    await firestore.collection(collectionName).doc(id).set(newClass, { merge: true })
+  } catch (error) {
+    return {
+      error: error.message,
+      description: 'Die Klasse konnte nicht aktualisiert werden.'
+    }
+  }
+}
+
 module.exports = {
   getClass,
   // getClasses,
   createClass,
+  updateClass,
   getClassesByTeacherId
 }

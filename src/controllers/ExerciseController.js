@@ -2,18 +2,21 @@ const { exerciseService, storageService } = require('../services')
 
 const createExercise = async (req, res) => {
   const { title, description, subject } = req.body
-  let storageUrl
-  if (req.file) {
-    storageUrl = await storageService.uploadFile(req.file, `${req.userId}/${title}.${req.file.mimetype}`)
-  }
   const exercise = await exerciseService.createExercise({
     title,
     description,
     subject,
-    createdBy: req.userId,
-    storageUrl
+    createdBy: req.userId
   })
+  if (req.file) {
+    await storageService.uploadFile(req.file, `${req.userId}/${exercise.id}.${req.file.mimetype}`)
+  }
   return res.json(exercise)
+}
+
+const listExercises = async (req, res) => {
+  const exercises = await exerciseService.getExercisesByTeacher(req.userId)
+  return res.json(exercises)
 }
 
 const getExercise = async (req, res) => {
@@ -24,6 +27,7 @@ const getExercise = async (req, res) => {
 
 module.exports = {
   createExercise,
+  listExercises,
   getExercise
 }
 

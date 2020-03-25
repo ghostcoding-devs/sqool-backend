@@ -13,13 +13,15 @@ const listClassPackages = async (req, res) => {
 }
 
 const createPackage = async (req, res) => {
-  const { classId, exercises, due } = req.body
+  const { classId, exercises, name, due } = req.body
   const package = await packageService.createPackage({
     classId,
+    name,
     exercises,
-    due
+    due: new Date(due) / 1000,
+    createdAt: parseInt(Date.now() / 1000)
   })
-  mailService.sendNewPackageMailToClass(classId, exercises.length)
+  // mailService.sendNewPackageMailToClass(classId, exercises.length)
   return res.json(package)
 }
 
