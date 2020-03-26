@@ -18,6 +18,21 @@ const getStudent = async id => {
   }
 }
 
+const getFreeStudentsByParents = async (parents) => {
+  try {
+    const result = await firestore.collection(collectionName)
+      .where('parentId', 'in', parents)
+      .where('classId', '==', null)
+      .get()
+    return docMapper(result.docs)
+  } catch (error) {
+    return {
+      error: error.message,
+      message: 'Schüler konnten nicht gefunden werden.'
+    }
+  }
+}
+
 const getStudentsByClass = async classId => {
   try {
     const result = await firestore.collection(collectionName).where('classId', '==', classId).get()
@@ -79,6 +94,7 @@ module.exports = {
   getStudent,
   getStudentsByClass,
   getStudentsByParents,
+  getFreeStudentsByParents,
   createStudent,
   updateStudent,
   deleteStudent

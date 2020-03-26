@@ -16,6 +16,12 @@ const getStudent = async (req, res) => {
   return res.json(student)
 }
 
+const getFreeStudentsByParents = async (req, res) => {
+  const { parents } = req.body
+  const students = await studentService.getFreeStudentsByParents(parents)
+  return res.json(students)
+}
+
 const listClassStudents = async (req, res) => {
   const { classId } = req.params
   const students = await studentService.getStudentsByClass(classId)
@@ -32,5 +38,6 @@ module.exports = {
   createStudent,
   getStudent,
   listClassStudents,
+  getFreeStudentsByParents,
   listParentStudents
 }

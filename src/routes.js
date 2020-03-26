@@ -17,10 +17,10 @@ const {
 
 module.exports = io => {
   // Classes
-  router.get('/classes', classController.listClasses)
+  router.get('/classes', authMiddleware, classController.listClasses)
   router.get('/classes/:id', classController.getClass)
   router.post('/classes', authMiddleware, socketMiddleware(io), classController.createClass)
-  // router.put('/classes/:id', socketMiddleware(io), classController.updateClass)
+  router.put('/classes/:id', socketMiddleware(io), classController.updateClass)
   // router.delete('/classes/:id', socketMiddleware(io), classController.deleteClass)
 
   // Users
@@ -36,27 +36,28 @@ module.exports = io => {
   // Packages
   // router.get('/packages', packageController.listPackages)
   // router.get('/packages/:id', packageController.getPackage)
-  // router.post('/packages', packageController.createPackage)
+  router.post('/packages', packageController.createPackage)
   // router.put('/packages/:id', socketMiddleware(io), packageController.updatePackage)
   // router.delete('/packages/:id', socketMiddleware(io), packageController.deletePackage)
 
   // router.get('/classes/packages/:classId', packageController.listClassPackages)
 
   // Exercises
-  // router.get('/exercises', exerciseController.listExercises)
-  // router.get('/exercises/:id', exerciseController.getExercise)
-  // router.post('/exercises', upload.single('uploadFile'), exerciseController.createExercise)
+  router.get('/exercises', authMiddleware, exerciseController.listExercises)
+  router.get('/exercises/:id', exerciseController.getExercise)
+  router.post('/exercises', authMiddleware, upload.single('uploadFile'), exerciseController.createExercise)
   // router.put('/exercises/:id', socketMiddleware(io), exerciseController.updateExercise)
   // router.delete('/exercises/:id', socketMiddleware(io), exerciseController.deleteExercise)
 
   // Students
   // router.get('/students', studentController.listStudents)
   // router.get('/students/:id', studentController.getStudent)
+  router.get('/students/parents/:parentId', studentController.listParentStudents)
+  router.post('/students/parents/free', studentController.getFreeStudentsByParents)
   // router.post('/students', studentController.createStudent)
   // router.put('/students/:id', studentController.updateStudent)
   // router.delete('/students/:id', studentController.deleteStudent)
 
-  router.get('/parents/students/:parentId', studentController.listParentStudents)
   router.get('/classes/students/:classId', studentController.listClassStudents)
 
   return router
