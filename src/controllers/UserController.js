@@ -31,8 +31,11 @@ const createParent = async (req, res) => {
     }
   }
   await userService.createUser(user.uid, userData, false)
-  return res.json({ success: true, data: userData })
 
+  return res.json({
+    id: user.uid,
+    ...userData
+    })
 }
 const getUser = async (req, res) => {
   const id = req.params.id

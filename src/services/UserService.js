@@ -14,21 +14,15 @@ const getUser = async id => {
       id: requestUser.id
     }
     if (userData) {
-      console.log(user)
-      return {
-        success: true,
-        data: user
-      }
+      return user
     } else {
       return {
-        success: false,
         error: 'User not found',
         description: `User with id: ${id} not found`
       }
     }
   } catch (error) {
     return {
-      success: false,
       error: error.message,
       description: 'Der Nutzer konnte nicht gefunden werden.'
     }

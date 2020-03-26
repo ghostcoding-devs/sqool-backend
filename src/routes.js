@@ -32,7 +32,6 @@ module.exports = io => {
   router.post('/users/teachers', userController.createTeacher)
   router.put('/users/:id', socketMiddleware(io), userController.updateUser)
   // router.delete('/users/:id', userController.deleteUser)
-  router.put('/users/resetPassword', userController.resetPassword)
 
   // Packages
   // router.get('/packages', packageController.listPackages)

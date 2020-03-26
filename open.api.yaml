@@ -1,0 +1,179 @@
+swagger: '2.0'
+info:
+  title: SQOOL BACKEND
+  description: Backend API 
+  version: 1.0.0
+host: sqool-backend-proxy-4hx3ooyila-ew.a.run.app
+x-google-endpoints:
+  - name: sqool-backend-proxy-4hx3ooyila-ew.a.run.app
+    allowCors: True
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: https://sqool-backend-4hx3ooyila-ew.a.run.app
+security:
+  - firebase: []
+paths:
+  /api/v1/classes:
+    get:
+      description: Returns all classes
+      summary: Returns all classes
+      tags: 
+       - classes
+      operationId: listClasses
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Returns an array containing exercise objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/exercise'
+        '400':
+          description: Returns an error object
+          schema:
+            $ref: '#/definitions/error'
+    post:
+        description: Create a class
+        summary: Create a class
+        tags: 
+          - classes
+        operationId: createClass
+        produces:
+        - application/json
+        responses:
+          '200':
+            description: Returns an array containing exercise objects
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/exercise'
+          '400':
+            description: Returns an error object
+            schema:
+              $ref: '#/definitions/error'      
+  /api/v1/classes/{id}:
+    get:
+      summary: Returns a class based on the param
+      description: Returns a class based on the param
+      tags: 
+        - classes
+      operationId: getClass
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: alphanumeric firebase document ID
+      responses:
+        '200':
+          description: Returns an array containing exercise objects
+          schema:
+            $ref: '#/definitions/exercise'
+        '400':
+          description: Returns an error object
+          schema:
+            $ref: '#/definitions/error'
+  /api/v1/users/{id}:
+    get:
+      summary: bla
+      description: bla
+      tags:
+        - users
+      operationId: getUser
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: alphanumeric firebase document ID
+      responses:
+        '200':
+          description: Returns an array containing exercise objects
+          schema:
+            $ref: '#/definitions/exercise'
+        '400':
+          description: Returns an error object
+          schema:
+            $ref: '#/definitions/error'
+    put:
+      summary: bla
+      description: bla
+      tags:
+        - users
+      operationId: updateUser
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: alphanumeric firebase document ID
+      responses:
+        '200':
+          description: Returns an array containing exercise objects
+          schema:
+            $ref: '#/definitions/exercise'
+        '400':
+          description: Returns an error object
+          schema:
+            $ref: '#/definitions/error'
+tags: 
+ - name: classes
+   description: classes 
+ - name: users
+   description: users 
+ - name: parents
+   description: parents 
+definitions:
+    error:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 422
+        message:
+          type: array
+          items:
+            type: object
+            properties:
+              property:
+                type: string
+                description: Describing the wrong parameter (can be in body / params / query)
+              error:
+                type: string
+                description: Describing the error in human readable way
+    exercise: 
+      type: object
+      properties: 
+        entryPointFile:
+          type: string
+          description: EntryPoint File for the given exercise
+          example: "index.js"
+        language:
+          type: string
+          description: "Programming Languge i.e. nodejs"
+          example: "nodejs"
+        name:
+          description: "Exercise Name"
+          type: string
+          example: "Hello World"
+        repo:
+          description: "Repository Url"
+          type: string
+securityDefinitions:
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/gc-uni-poc"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "sqool-271814"
